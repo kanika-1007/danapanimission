@@ -1,0 +1,60 @@
+<!doctype html>
+<html lang="hi">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#123c2d">
+    <title>व्यवस्थापक — दाना पानी मिशन</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Hind:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+    <script type="module" src="admin.js"></script>
+  </head>
+  <body class="admin-body">
+    <main class="admin-shell">
+      <div class="admin-top">
+        <a class="brand" href="index.html"><span class="brand-mark" aria-hidden="true">✳</span><span><strong>दाना पानी मिशन</strong><small>सवाई माधोपुर, राजस्थान</small></span></a>
+        <a class="back-link" href="index.html">← वेबसाइट पर जाएँ</a>
+      </div>
+
+      <section class="admin-card">
+        <div id="login-panel">
+          <p class="eyebrow">व्यवस्थापक क्षेत्र</p>
+          <h1>मिशन अपडेट करें</h1>
+          <p class="admin-intro">मिशन के आँकड़े और नए सहयोगियों के नाम यहाँ सुरक्षित रूप से अपडेट करें।</p>
+          <p class="admin-status" id="status-message" role="status" aria-live="polite"></p>
+          <form class="admin-form" id="login-form">
+            <label>ईमेल पता<input id="email" name="email" type="email" autocomplete="username" required></label>
+            <label>पासवर्ड<input id="password" name="password" type="password" autocomplete="current-password" required></label>
+            <button class="button button-primary" type="submit">साइन इन करें <span aria-hidden="true">→</span></button>
+          </form>
+        </div>
+
+        <div id="dashboard-panel" hidden>
+          <p class="eyebrow">मिशन डैशबोर्ड</p>
+          <h1>नमस्ते, व्यवस्थापक</h1>
+          <p class="admin-intro">यह बदलाव वेबसाइट पर तुरंत दिखाई देंगे।</p>
+          <p class="admin-user" id="admin-user"></p>
+          <p class="admin-status" id="dashboard-status" role="status" aria-live="polite"></p>
+
+          <div class="admin-divider"></div>
+          <h2 class="admin-section-title">कुल प्राप्त सहयोग अपडेट करें</h2>
+          <form class="admin-form" id="donation-form">
+            <label>कुल सहयोग राशि (₹)<input id="donation-total" name="donationTotal" type="number" min="0" step="1" inputmode="numeric" required></label>
+            <button class="button button-primary" type="submit">राशि सेव करें <span aria-hidden="true">→</span></button>
+          </form>
+
+          <div class="admin-divider"></div>
+          <h2 class="admin-section-title">नए सहयोगी का नाम जोड़ें</h2>
+          <form class="admin-form" id="member-form">
+            <label>सहयोगी का पूरा नाम<input id="member-name" name="name" type="text" maxlength="100" autocomplete="name" required></label>
+            <button class="button button-primary" type="submit">सहयोगी जोड़ें <span aria-hidden="true">→</span></button>
+          </form>
+          <div class="admin-divider"></div>
+          <button class="admin-logout" id="logout-button" type="button">साइन आउट करें</button>
+        </div>
+      </section>
+    </main>
+  </body>
+</html>
