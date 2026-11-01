@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="theme-color" content="#123c2d">
     <title>व्यवस्थापक — दाना पानी मिशन</title>
+    <link rel="icon" href="cow7.jpeg" type="image/jpeg">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Hind:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -50,7 +51,8 @@
           <p class="admin-intro">Google Drive में फोटो को “Anyone with the link” पर Viewer access दें, फिर उसका लिंक यहाँ पेस्ट करें।</p>
           <form class="admin-form" id="banner-form">
             <label>Google Drive फोटो लिंक<input id="banner-drive-link" name="driveLink" type="url" inputmode="url" placeholder="https://drive.google.com/file/d/FILE_ID/view"></label>
-            <button class="button button-primary" type="submit">बैनर फोटो सेव करें <span aria-hidden="true">→</span></button>
+            <label>फोटो के ऊपर दिखने वाला कैप्शन<input id="banner-caption" name="caption" type="text" maxlength="160" value="आपके सहयोग से, गौमाता की सेवा।" required></label>
+            <button class="button button-primary" type="submit">बैनर अपडेट करें <span aria-hidden="true">→</span></button>
           </form>
           <div class="admin-divider"></div>
           <button class="admin-logout" id="logout-button" type="button">साइन आउट करें</button>

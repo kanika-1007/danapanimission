@@ -6,6 +6,7 @@ const donationTotal = document.querySelector("#total-donations");
 const memberCount = document.querySelector("#member-count");
 const photoBanner = document.querySelector("#photo-banner");
 const bannerImage = document.querySelector("#photo-banner-image");
+const bannerCaption = document.querySelector("#photo-banner-caption");
 const bannerError = document.querySelector("#photo-banner-error");
 const configured = Boolean(FIREBASE_CONFIG.apiKey && FIREBASE_CONFIG.projectId && FIREBASE_CONFIG.appId);
 const formatRupees = (value) => `₹${new Intl.NumberFormat("en-IN").format(value)}`;
@@ -47,7 +48,20 @@ if (!configured) {
       bannerError.hidden = true;
       return;
     }
-    const driveFileId = snapshot.data().driveFileId;
+    const banner = snapshot.data();
+    if (typeof banner.caption === "string" && banner.caption.trim() && banner.caption.length <= 160) {
+      bannerCaption.textContent = banner.caption;
+    } else {
+      bannerCaption.textContent = "आपके सहयोग से, गौमाता की सेवा।";
+      if (banner.caption !== undefined) console.error("The caption in settings/banner is invalid.");
+    }
+
+    const driveFileId = banner.driveFileId;
+    if (driveFileId === undefined) {
+      bannerImage.src = "श्री राधा गोविंद गौशाला कुस्तला.jpg";
+      bannerImage.dataset.fallback = "true";
+      return;
+    }
     if (typeof driveFileId !== "string" || !/^[A-Za-z0-9_-]{10,200}$/.test(driveFileId)) {
       bannerImage.src = "श्री राधा गोविंद गौशाला कुस्तला.jpg";
       bannerImage.dataset.fallback = "true";

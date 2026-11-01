@@ -13,9 +13,9 @@ A lightweight Hindi-language public website and Firebase-backed admin dashboard 
 
 The public page reads `settings/summary.donationTotal` and `settings/summary.memberCount` in real time. The admin can update only the total donation amount and the number of mission members. The site advertises the ₹300 monthly minimum without storing or publishing individual member contribution amounts.
 
-To display a banner photo, upload it to Google Drive, set its sharing access to **Anyone with the link — Viewer**, then paste its share link into the admin dashboard. The website stores the Drive file ID in `settings/banner`; no Firebase Storage is required. Until a Drive photo is configured, the banner uses the supplied gaushala photo. Clear the link and save to remove the Drive photo and return to the supplied image. A sample link format is `https://drive.google.com/file/d/FILE_ID/view`; replace `FILE_ID` with the ID from your actual photo link.
+To display a banner photo, upload it to Google Drive, set its sharing access to **Anyone with the link — Viewer**, then paste its share link and caption into the admin dashboard. The website stores the Drive file ID and caption in `settings/banner`; no Firebase Storage is required. Until a Drive photo is configured, the banner uses the supplied gaushala photo. Clear the link and save to return to the supplied image while keeping the caption. A sample link format is `https://drive.google.com/file/d/FILE_ID/view`; replace `FILE_ID` with the ID from your actual photo link.
 
-The phone number on the site, **94147 09683**, is the contact number included in the supplied campaign artwork.
+The contact phone number on the site is **94147 90683**.
 
 ## Local preview
 

@@ -1,6 +1,6 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
 import { getAuth, onAuthStateChanged, signInWithEmailAndPassword, signOut } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
-import { getFirestore, deleteDoc, doc, onSnapshot, serverTimestamp, setDoc } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+import { getFirestore, doc, onSnapshot, serverTimestamp, setDoc } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 import { FIREBASE_CONFIG } from "./firebase-config.js";
 
 const configured = Boolean(FIREBASE_CONFIG.apiKey && FIREBASE_CONFIG.projectId && FIREBASE_CONFIG.appId);
@@ -58,9 +58,16 @@ if (!configured) {
     });
 
     stopBannerListener = onSnapshot(doc(db, "settings", "banner"), (snapshot) => {
-      document.querySelector("#banner-drive-link").value = snapshot.exists()
-        ? `https://drive.google.com/file/d/${snapshot.data().driveFileId}/view`
-        : "";
+      const banner = snapshot.exists() ? snapshot.data() : {};
+      const driveFileId = banner.driveFileId;
+      document.querySelector("#banner-drive-link").value =
+        typeof driveFileId === "string" && /^[A-Za-z0-9_-]{10,200}$/.test(driveFileId)
+          ? `https://drive.google.com/file/d/${driveFileId}/view`
+          : "";
+      document.querySelector("#banner-caption").value =
+        typeof banner.caption === "string" && banner.caption.trim()
+          ? banner.caption
+          : "आपके सहयोग से, गौमाता की सेवा।";
     }, (error) => {
       showStatus(dashboardStatus, "बैनर फोटो की जानकारी लोड नहीं हो सकी। Firestore permissions जाँचें।", true);
       console.error("Could not load the banner photo.", error);
@@ -116,9 +123,14 @@ if (!configured) {
   bannerForm.addEventListener("submit", async (event) => {
     event.preventDefault();
     const rawLink = bannerForm.elements.driveLink.value.trim();
+    const caption = bannerForm.elements.caption.value.trim();
     const bannerRef = doc(db, "settings", "banner");
     const submitButton = bannerForm.querySelector("button");
     let driveFileId;
+    if (!caption || caption.length > 160) {
+      showStatus(dashboardStatus, "कैप्शन 1 से 160 अक्षरों के बीच लिखें।", true);
+      return;
+    }
     if (rawLink) {
       try {
         const link = new URL(rawLink);
@@ -136,16 +148,14 @@ if (!configured) {
     }
 
     submitButton.disabled = true;
-    showStatus(dashboardStatus, rawLink ? "बैनर फोटो सेव हो रही है…" : "बैनर फोटो हटाई जा रही है…");
+    showStatus(dashboardStatus, "बैनर अपडेट हो रहा है…");
     try {
-      if (!rawLink) {
-        await deleteDoc(bannerRef);
-        showStatus(dashboardStatus, "बैनर फोटो हटा दी गई।");
-        return;
-      }
-
-      await setDoc(bannerRef, { driveFileId, updatedAt: serverTimestamp() });
-      showStatus(dashboardStatus, "बैनर फोटो सफलतापूर्वक अपडेट हुई।");
+      const bannerData = { caption, updatedAt: serverTimestamp() };
+      if (driveFileId) bannerData.driveFileId = driveFileId;
+      await setDoc(bannerRef, bannerData);
+      showStatus(dashboardStatus, rawLink
+        ? "बैनर फोटो और कैप्शन सफलतापूर्वक अपडेट हुए।"
+        : "कैप्शन सेव हुआ। फोटो के लिए वेबसाइट की मौजूदा तस्वीर दिखाई जाएगी।");
     } catch (error) {
       showStatus(dashboardStatus, "बैनर फोटो सेव नहीं हुई। आपका admin access और Firestore rules जाँचें।", true);
       console.error("Could not update the banner photo.", error);
