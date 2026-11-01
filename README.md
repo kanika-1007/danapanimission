@@ -11,7 +11,7 @@ A lightweight Hindi-language public website and Firebase-backed admin dashboard 
 5. In Firestore, create a document in the `admins` collection whose document ID is the administrator's Firebase Auth **UID**. The document may contain a simple field such as `role: "admin"`. Do not let the website create admin records.
 6. Serve the site over HTTP (ES modules do not work from a `file://` URL). Deploy the site files and `firestore.rules` using your chosen static host and Firebase tooling.
 
-The public page reads `settings/summary.donationTotal` and the `members` collection in real time. The admin can set the total received donation amount and add member names. The displayed member count is derived from the members collection, so it cannot drift from the published names. The site advertises the ₹300 monthly minimum without storing or publishing individual member contribution amounts.
+The public page reads `settings/summary.donationTotal` and `settings/summary.memberCount` in real time. The admin can update only the total donation amount and the number of mission members. The site advertises the ₹300 monthly minimum without storing or publishing individual member contribution amounts.
 
 The phone number on the site, **94147 09683**, is the contact number included in the supplied campaign artwork.
 

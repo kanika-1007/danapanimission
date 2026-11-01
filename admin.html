@@ -22,7 +22,7 @@
         <div id="login-panel">
           <p class="eyebrow">व्यवस्थापक क्षेत्र</p>
           <h1>मिशन अपडेट करें</h1>
-          <p class="admin-intro">मिशन के आँकड़े और नए सहयोगियों के नाम यहाँ सुरक्षित रूप से अपडेट करें।</p>
+          <p class="admin-intro">यहाँ केवल कुल सहयोग राशि और सहयोगियों की संख्या अपडेट करें।</p>
           <p class="admin-status" id="status-message" role="status" aria-live="polite"></p>
           <form class="admin-form" id="login-form">
             <label>ईमेल पता<input id="email" name="email" type="email" autocomplete="username" required></label>
@@ -39,17 +39,11 @@
           <p class="admin-status" id="dashboard-status" role="status" aria-live="polite"></p>
 
           <div class="admin-divider"></div>
-          <h2 class="admin-section-title">कुल प्राप्त सहयोग अपडेट करें</h2>
+          <h2 class="admin-section-title">मिशन के आँकड़े अपडेट करें</h2>
           <form class="admin-form" id="donation-form">
             <label>कुल सहयोग राशि (₹)<input id="donation-total" name="donationTotal" type="number" min="0" step="1" inputmode="numeric" required></label>
-            <button class="button button-primary" type="submit">राशि सेव करें <span aria-hidden="true">→</span></button>
-          </form>
-
-          <div class="admin-divider"></div>
-          <h2 class="admin-section-title">नए सहयोगी का नाम जोड़ें</h2>
-          <form class="admin-form" id="member-form">
-            <label>सहयोगी का पूरा नाम<input id="member-name" name="name" type="text" maxlength="100" autocomplete="name" required></label>
-            <button class="button button-primary" type="submit">सहयोगी जोड़ें <span aria-hidden="true">→</span></button>
+            <label>सहयोगियों की संख्या<input id="member-count" name="memberCount" type="number" min="0" step="1" inputmode="numeric" required></label>
+            <button class="button button-primary" type="submit">बदलाव सेव करें <span aria-hidden="true">→</span></button>
           </form>
           <div class="admin-divider"></div>
           <button class="admin-logout" id="logout-button" type="button">साइन आउट करें</button>

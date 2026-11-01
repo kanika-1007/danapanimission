@@ -9,20 +9,12 @@ service cloud.firestore {
     match /settings/summary {
       allow read: if true;
       allow create, update: if isAdmin()
-        && request.resource.data.keys().hasOnly(['donationTotal', 'updatedAt'])
+        && request.resource.data.keys().hasOnly(['donationTotal', 'memberCount', 'updatedAt'])
         && request.resource.data.donationTotal is int
-        && request.resource.data.donationTotal >= 0;
+        && request.resource.data.donationTotal >= 0
+        && request.resource.data.memberCount is int
+        && request.resource.data.memberCount >= 0;
       allow delete: if false;
-    }
-
-    match /members/{memberId} {
-      allow read: if true;
-      allow create: if isAdmin()
-        && request.resource.data.keys().hasOnly(['name', 'joinedAt'])
-        && request.resource.data.name is string
-        && request.resource.data.name.size() > 0
-        && request.resource.data.name.size() <= 100;
-      allow update, delete: if isAdmin();
     }
 
     match /admins/{uid} {
