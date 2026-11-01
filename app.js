@@ -11,6 +11,42 @@ const bannerError = document.querySelector("#photo-banner-error");
 const configured = Boolean(FIREBASE_CONFIG.apiKey && FIREBASE_CONFIG.projectId && FIREBASE_CONFIG.appId);
 const formatRupees = (value) => `₹${new Intl.NumberFormat("en-IN").format(value)}`;
 
+const revealElements = document.querySelectorAll([
+  ".hero-copy",
+  ".hero-visual",
+  ".photo-banner",
+  ".stat",
+  ".donation-intro",
+  ".donation-plan",
+  ".section-heading",
+  ".mission-card",
+  ".gaushala-heading",
+  ".gaushala-card",
+  ".steps-heading",
+  ".step-card",
+  ".gallery-heading",
+  ".gallery-card",
+  ".join-inner > div",
+  ".contact-action"
+].join(", "));
+
+if ("IntersectionObserver" in window) {
+  const revealObserver = new IntersectionObserver((entries, observer) => {
+    entries.forEach((entry) => {
+      if (!entry.isIntersecting) return;
+      entry.target.classList.add("is-visible");
+      observer.unobserve(entry.target);
+    });
+  }, { threshold: 0.12, rootMargin: "0px 0px -35px 0px" });
+
+  revealElements.forEach((element) => {
+    element.classList.add("reveal");
+    revealObserver.observe(element);
+  });
+} else {
+  revealElements.forEach((element) => element.classList.add("is-visible"));
+}
+
 function showConnectionError(message) {
   donationTotal.textContent = "उपलब्ध नहीं";
   memberCount.textContent = "उपलब्ध नहीं";
