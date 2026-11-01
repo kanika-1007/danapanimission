@@ -17,6 +17,15 @@ service cloud.firestore {
       allow delete: if false;
     }
 
+    match /settings/banner {
+      allow read: if true;
+      allow create, update: if isAdmin()
+        && request.resource.data.keys().hasOnly(['driveFileId', 'updatedAt'])
+        && request.resource.data.driveFileId is string
+        && request.resource.data.driveFileId.matches('^[A-Za-z0-9_-]{10,200}$');
+      allow delete: if isAdmin();
+    }
+
     match /admins/{uid} {
       allow read: if request.auth != null && request.auth.uid == uid;
       allow write: if false;

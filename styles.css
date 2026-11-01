@@ -73,6 +73,9 @@ h1 em, h2 em { color: var(--saffron); font-family: var(--serif); font-weight: 40
 .hero-decoration { position: absolute; color: #c78d3826; font-size: 85px; }
 .decoration-one { top: 8px; left: -59px; }
 .decoration-two { bottom: 24px; right: -51px; font-size: 104px; }
+.photo-banner { width: min(1120px, calc(100% - 64px)); margin: 0 auto 34px; overflow: hidden; border: 1px solid #e8dfd0; background: #f1ece2; }
+.photo-banner img { display: block; width: 100%; max-height: 440px; object-fit: cover; }
+.photo-banner p { margin: 0; padding: 28px 20px; color: var(--muted); font-family: "Hind", sans-serif; text-align: center; }
 .stats-band { border-top: 3px solid #d89c39; border-bottom: 3px solid #d89c39; background: linear-gradient(105deg, #123b29, #1d5038 50%, #123b29); color: var(--white); }
 .stats-inner { width: min(1120px, calc(100% - 64px)); min-height: 114px; margin: auto; display: flex; align-items: center; gap: 40px; }
 .stat { min-width: 245px; display: flex; align-items: center; gap: 14px; }
@@ -162,6 +165,7 @@ h1 em, h2 em { color: var(--saffron); font-family: var(--serif); font-weight: 40
 
 @media (max-width: 900px) {
   .section-wrap, .stats-inner, .join-inner { width: min(100% - 48px, 700px); }
+  .photo-banner { width: min(100% - 48px, 700px); }
   .hero { min-height: 470px; gap: 25px; }
   .hero-visual { align-self: center; }
   .hero-stamp { left: 7px; }
@@ -178,6 +182,7 @@ h1 em, h2 em { color: var(--saffron); font-family: var(--serif); font-weight: 40
 }
 @media (max-width: 600px) {
   .section-wrap, .stats-inner, .join-inner { width: calc(100% - 40px); }
+  .photo-banner { width: calc(100% - 40px); margin-bottom: 24px; }
   .site-header { height: 72px; padding: 0 20px; }
   .brand-mark { width: 36px; height: 36px; font-size: 20px; }
   .brand strong { font-size: 16px; }

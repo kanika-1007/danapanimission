@@ -22,7 +22,7 @@
         <div id="login-panel">
           <p class="eyebrow">व्यवस्थापक क्षेत्र</p>
           <h1>मिशन अपडेट करें</h1>
-          <p class="admin-intro">यहाँ केवल कुल सहयोग राशि और सहयोगियों की संख्या अपडेट करें।</p>
+          <p class="admin-intro">मिशन के आँकड़े अपडेट करें और वेबसाइट के बैनर के लिए Google Drive फोटो लिंक जोड़ें।</p>
           <p class="admin-status" id="status-message" role="status" aria-live="polite"></p>
           <form class="admin-form" id="login-form">
             <label>ईमेल पता<input id="email" name="email" type="email" autocomplete="username" required></label>
@@ -44,6 +44,13 @@
             <label>कुल सहयोग राशि (₹)<input id="donation-total" name="donationTotal" type="number" min="0" step="1" inputmode="numeric" required></label>
             <label>सहयोगियों की संख्या<input id="member-count" name="memberCount" type="number" min="0" step="1" inputmode="numeric" required></label>
             <button class="button button-primary" type="submit">बदलाव सेव करें <span aria-hidden="true">→</span></button>
+          </form>
+          <div class="admin-divider"></div>
+          <h2 class="admin-section-title">वेबसाइट बैनर फोटो</h2>
+          <p class="admin-intro">Google Drive में फोटो को “Anyone with the link” पर Viewer access दें, फिर उसका लिंक यहाँ पेस्ट करें।</p>
+          <form class="admin-form" id="banner-form">
+            <label>Google Drive फोटो लिंक<input id="banner-drive-link" name="driveLink" type="url" inputmode="url" placeholder="https://drive.google.com/file/d/FILE_ID/view"></label>
+            <button class="button button-primary" type="submit">बैनर फोटो सेव करें <span aria-hidden="true">→</span></button>
           </form>
           <div class="admin-divider"></div>
           <button class="admin-logout" id="logout-button" type="button">साइन आउट करें</button>

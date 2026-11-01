@@ -1,6 +1,6 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
 import { getAuth, onAuthStateChanged, signInWithEmailAndPassword, signOut } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
-import { getFirestore, doc, onSnapshot, serverTimestamp, setDoc } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+import { getFirestore, deleteDoc, doc, onSnapshot, serverTimestamp, setDoc } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 import { FIREBASE_CONFIG } from "./firebase-config.js";
 
 const configured = Boolean(FIREBASE_CONFIG.apiKey && FIREBASE_CONFIG.projectId && FIREBASE_CONFIG.appId);
@@ -10,6 +10,7 @@ const statusMessage = document.querySelector("#status-message");
 const dashboardStatus = document.querySelector("#dashboard-status");
 const loginForm = document.querySelector("#login-form");
 const donationForm = document.querySelector("#donation-form");
+const bannerForm = document.querySelector("#banner-form");
 const logoutButton = document.querySelector("#logout-button");
 const showStatus = (element, message, isError = false) => {
   element.textContent = message;
@@ -23,11 +24,16 @@ if (!configured) {
   const auth = getAuth(app);
   const db = getFirestore(app);
   let stopSummaryListener;
+  let stopBannerListener;
 
   onAuthStateChanged(auth, (user) => {
     if (stopSummaryListener) {
       stopSummaryListener();
       stopSummaryListener = undefined;
+    }
+    if (stopBannerListener) {
+      stopBannerListener();
+      stopBannerListener = undefined;
     }
     loginPanel.hidden = Boolean(user);
     dashboardPanel.hidden = !user;
@@ -49,6 +55,15 @@ if (!configured) {
     }, (error) => {
       showStatus(dashboardStatus, "मिशन के आँकड़े लोड नहीं हो सके। Firestore permissions जाँचें।", true);
       console.error("Could not load the mission summary.", error);
+    });
+
+    stopBannerListener = onSnapshot(doc(db, "settings", "banner"), (snapshot) => {
+      document.querySelector("#banner-drive-link").value = snapshot.exists()
+        ? `https://drive.google.com/file/d/${snapshot.data().driveFileId}/view`
+        : "";
+    }, (error) => {
+      showStatus(dashboardStatus, "बैनर फोटो की जानकारी लोड नहीं हो सकी। Firestore permissions जाँचें।", true);
+      console.error("Could not load the banner photo.", error);
     });
   }, (error) => {
     showStatus(statusMessage, "साइन-इन स्थिति जाँची नहीं जा सकी। कृपया पेज रीफ़्रेश करें।", true);
@@ -93,6 +108,47 @@ if (!configured) {
     } catch (error) {
       showStatus(dashboardStatus, "मिशन के आँकड़े सेव नहीं हुए। आपका admin access और Firestore rules जाँचें।", true);
       console.error("Could not update the mission summary.", error);
+    } finally {
+      submitButton.disabled = false;
+    }
+  });
+
+  bannerForm.addEventListener("submit", async (event) => {
+    event.preventDefault();
+    const rawLink = bannerForm.elements.driveLink.value.trim();
+    const bannerRef = doc(db, "settings", "banner");
+    const submitButton = bannerForm.querySelector("button");
+    let driveFileId;
+    if (rawLink) {
+      try {
+        const link = new URL(rawLink);
+        const isDriveLink = link.protocol === "https:" && link.hostname === "drive.google.com";
+        const pathMatch = link.pathname.match(/\/file\/d\/([A-Za-z0-9_-]+)/);
+        driveFileId = pathMatch ? pathMatch[1] : link.searchParams.get("id");
+        if (!isDriveLink || !driveFileId || !/^[A-Za-z0-9_-]{10,200}$/.test(driveFileId)) {
+          showStatus(dashboardStatus, "कृपया मान्य Google Drive फोटो लिंक पेस्ट करें।", true);
+          return;
+        }
+      } catch {
+        showStatus(dashboardStatus, "कृपया मान्य Google Drive फोटो लिंक पेस्ट करें।", true);
+        return;
+      }
+    }
+
+    submitButton.disabled = true;
+    showStatus(dashboardStatus, rawLink ? "बैनर फोटो सेव हो रही है…" : "बैनर फोटो हटाई जा रही है…");
+    try {
+      if (!rawLink) {
+        await deleteDoc(bannerRef);
+        showStatus(dashboardStatus, "बैनर फोटो हटा दी गई।");
+        return;
+      }
+
+      await setDoc(bannerRef, { driveFileId, updatedAt: serverTimestamp() });
+      showStatus(dashboardStatus, "बैनर फोटो सफलतापूर्वक अपडेट हुई।");
+    } catch (error) {
+      showStatus(dashboardStatus, "बैनर फोटो सेव नहीं हुई। आपका admin access और Firestore rules जाँचें।", true);
+      console.error("Could not update the banner photo.", error);
     } finally {
       submitButton.disabled = false;
     }
